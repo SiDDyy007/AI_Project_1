@@ -16,9 +16,6 @@ def input_puzzle(self):
 
 #INPUT FUNCTIONS
 def choose_heuristic(self):
-    """
-    Prompt the user to choose a heuristic function and set the chosen heuristic.
-    """
     print("Choose the heuristic function:")
     print("1. Uniform Cost Search")
     print("2. A* with the Misplaced Tile heuristic (Manhattan distance)")
@@ -32,3 +29,7 @@ def choose_heuristic(self):
         self.heuristic = "euclidean"
     else:
         raise ValueError("Invalid choice")
+
+def driver(self):
+    self.choose_heuristic()
+    print("Enter the start state matrix:")
