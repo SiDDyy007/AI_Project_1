@@ -1,6 +1,7 @@
 #Importing the neccessary libraries
 import math
 import heapq
+from puzzle_node import PuzzleNode
 print ("Hello World")
 
 #INPUT FUNCTIONS
