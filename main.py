@@ -26,7 +26,6 @@ class PuzzleSolver:
             self.heuristic = "euclidean"
         else:
             raise ValueError("Invalid choice")
-
     #INPUT FUNCTIONS
     def input_puzzle(self):
         """
@@ -92,3 +91,9 @@ class PuzzleSolver:
             goal_x, goal_y = self.find_value(goal, str(num))
             distance += math.sqrt((start_x - goal_x) ** 2 + (start_y - goal_y) ** 2)
         return distance
+
+    def find_value(self, matrix, value):
+        for row in range(len(matrix)):
+            for col in range(len(matrix[row])):
+                if matrix[row][col] == value:
+                    return row, col
