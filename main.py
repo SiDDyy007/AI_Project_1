@@ -42,3 +42,11 @@ def manhattan_distance(self, start, goal):
             goal_x, goal_y = self.find_value(goal, str(num))
             distance += abs(start_x - goal_x) + abs(start_y - goal_y)
         return distance
+
+def euclidean_distance(self, start, goal):
+        distance = 0
+        for num in range(1, self.size * self.size):
+            start_x, start_y = self.find_value(start, str(num))
+            goal_x, goal_y = self.find_value(goal, str(num))
+            distance += math.sqrt((start_x - goal_x) ** 2 + (start_y - goal_y) ** 2)
+        return distance
