@@ -5,6 +5,12 @@ from puzzle_node import PuzzleNode
 print ("Hello World")
 
 class PuzzleSolver:
+
+    def __init__(self, size):
+        self.size = size
+        self.open_list = []
+        self.visited = set()
+        
     #INPUT FUNCTIONS
     def input_puzzle(self):
         """
