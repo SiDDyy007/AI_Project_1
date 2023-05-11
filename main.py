@@ -70,12 +70,6 @@ class PuzzleSolver:
                         return False
             return True
 
-    def driver(self):
-        self.choose_heuristic()
-        print("Enter the start state matrix:")
-        start_matrix = self.input_puzzle()
-        goal_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']]
-
     def manhattan_distance(self, start, goal):
             distance = 0
             for num in range(1, self.size * self.size):
@@ -97,3 +91,12 @@ class PuzzleSolver:
             for col in range(len(matrix[row])):
                 if matrix[row][col] == value:
                     return row, col
+    def driver(self):
+        self.choose_heuristic()
+        print("Enter the start state matrix:")
+        start_matrix = self.input_puzzle()
+        goal_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']]
+        
+        start_node = PuzzleNode(start_matrix, 0, 0)
+        start_node.f_val = self.f(start_node, goal_matrix)
+        heapq.heappush(self.open_list, (start_node.g_val, start_node))
