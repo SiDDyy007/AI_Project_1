@@ -31,6 +31,16 @@ def choose_heuristic(self):
     else:
         raise ValueError("Invalid choice")
 
+def f(self, start, goal):
+        if self.heuristic == "manhattan":
+            return self.manhattan_distance(start.data, goal)
+        elif self.heuristic == "euclidean":
+            return self.euclidean_distance(start.data, goal)
+        elif self.heuristic == "uniform":
+            return 0
+        else:
+            raise ValueError("Invalid heuristic")
+
 def equal_check(self, start, goal):
         for row in range(len(start)):
             for col in range(len(start)):
