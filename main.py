@@ -31,9 +31,18 @@ def choose_heuristic(self):
     else:
         raise ValueError("Invalid choice")
 
+def equal_check(self, start, goal):
+        for row in range(len(start)):
+            for col in range(len(start)):
+                if start[row][col] != goal[row][col]:
+                    return False
+        return True
+
 def driver(self):
     self.choose_heuristic()
     print("Enter the start state matrix:")
+    start_matrix = self.input_puzzle()
+    goal_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']]
 
 def manhattan_distance(self, start, goal):
         distance = 0
