@@ -10,7 +10,23 @@ class PuzzleSolver:
         self.size = size
         self.open_list = []
         self.visited = set()
-        
+    
+    #INPUT FUNCTIONS
+    def choose_heuristic(self):
+        print("Choose the heuristic function:")
+        print("1. Uniform Cost Search")
+        print("2. A* with the Misplaced Tile heuristic (Manhattan distance)")
+        print("3. A* with the Euclidean distance heuristic")
+        choice = int(input("Enter the number of your choice: "))
+        if choice == 1:
+            self.heuristic = "uniform"
+        elif choice == 2:
+            self.heuristic = "manhattan"
+        elif choice == 3:
+            self.heuristic = "euclidean"
+        else:
+            raise ValueError("Invalid choice")
+
     #INPUT FUNCTIONS
     def input_puzzle(self):
         """
