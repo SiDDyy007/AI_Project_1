@@ -53,7 +53,7 @@ class PuzzleSolver:
         else:
             raise ValueError("Invalid choice")
 
-    def f(self, start, goal):
+    def h(self, start, goal):
             if self.heuristic == "manhattan":
                 return self.manhattan_distance(start.data, goal)
             elif self.heuristic == "euclidean":
@@ -99,27 +99,29 @@ class PuzzleSolver:
         goal_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']]
         
         start_node = PuzzleNode(start_matrix, 0, 0)
-        start_node.f_val = self.f(start_node, goal_matrix)
-        heapq.heappush(self.open_list, (start_node.g_val, start_node))
+        start_node.h_val = self.h(start_node, goal_matrix)
+        start_node.f_val = start_node.h_val + start_node.depth
+        heapq.heappush(self.open_list, (start_node.f_val, start_node))
         q_nodes = 0
         expanded_nodes = 0
         while self.open_list:
             expanded_nodes += 1            
             current_cost, current_node = heapq.heappop(self.open_list)
-            print("Current g(n) =",current_node.level, "and h(n) = ",current_node.f_val)
+            print("Current g(n) =",current_node.depth, "and h(n) = ",current_node.f_val)
+            print("Total f(n) for this state:",current_cost)
             for row in current_node.data:
                 print(" ".join(row))
 
-            if self.check_similar(current_node.data, goal_matrix):                
+            if self.equal_check(current_node.data, goal_matrix):                
                 print("\nGoal reached!")
                 break
             print("Expanding this Node ...")
             for child in current_node.generate_children():
                 child_tuple = tuple(map(tuple, child.data))
                 if child_tuple not in self.visited:
-                    child.f_val = self.f(child, goal_matrix)
-                    child.g_val = child.f_val + child.level
-                    heapq.heappush(self.open_list, (child.g_val, child))
+                    child.h_val = self.h(child, goal_matrix)
+                    child.f_val = child.h_val + child.level
+                    heapq.heappush(self.open_list, (child.f_val, child))
             q_nodes = max(q_nodes, len(self.open_list))
             
         if not self.open_list:

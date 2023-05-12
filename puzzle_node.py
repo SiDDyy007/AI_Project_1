@@ -3,7 +3,7 @@ class PuzzleNode():
         self.data = data
         self.depth = depth
         self.h_val = h_val
-        self.g_val = 0
+        self.f_val = 0
     
     def __lt__(self, other):
         return self.g_val < other.g_val
