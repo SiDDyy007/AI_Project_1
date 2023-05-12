@@ -91,6 +91,7 @@ class PuzzleSolver:
             for col in range(len(matrix[row])):
                 if matrix[row][col] == value:
                     return row, col
+    
     def driver(self):
         self.choose_heuristic()
         print("Enter the start state matrix:")
@@ -100,3 +101,15 @@ class PuzzleSolver:
         start_node = PuzzleNode(start_matrix, 0, 0)
         start_node.f_val = self.f(start_node, goal_matrix)
         heapq.heappush(self.open_list, (start_node.g_val, start_node))
+        q_nodes = 0
+        expanded_nodes = 0
+        while self.open_list:
+            expanded_nodes += 1            
+            current_cost, current_node = heapq.heappop(self.open_list)
+            print("Current g(n) =",current_node.level, "and h(n) = ",current_node.f_val)
+            for row in current_node.data:
+                print(" ".join(row))
+                
+            if self.check_similar(current_node.data, goal_matrix):                
+                print("\nGoal reached!")
+                break
