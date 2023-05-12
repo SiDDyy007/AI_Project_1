@@ -1,6 +1,7 @@
 class PuzzleNode():
-    def __init__(self, data, depth, h_val):
+    def __init__(self, data, depth, h_val, parent = None):
         self.data = data
+        self.parent = parent
         self.depth = depth
         self.h_val = h_val
         self.f_val = 0
@@ -13,6 +14,7 @@ class PuzzleNode():
             for col in range(len(self.data)):
                 if self.data[row][col] == '0':
                     return row, col
+                
     def generate_children(self):
         n = len(self.data)
         blank_row, blank_col = self.find_space()
@@ -29,7 +31,7 @@ class PuzzleNode():
                 # Create a new matrix with the blank space moved to the new position
                 new_matrix = [row.copy() for row in self.data]
                 new_matrix[blank_row][blank_col], new_matrix[row][col] = new_matrix[row][col], new_matrix[blank_row][blank_col]
-                child = PuzzleNode(new_matrix, self.depth + 1, 0)
+                child = PuzzleNode(new_matrix, self.depth + 1, 0, parent = self)
                 children.append(child)
                 
         return children
