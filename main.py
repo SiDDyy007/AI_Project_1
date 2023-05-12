@@ -109,7 +109,15 @@ class PuzzleSolver:
             print("Current g(n) =",current_node.level, "and h(n) = ",current_node.f_val)
             for row in current_node.data:
                 print(" ".join(row))
-                
+
             if self.check_similar(current_node.data, goal_matrix):                
                 print("\nGoal reached!")
                 break
+            print("Expanding this Node ...")
+            for child in current_node.generate_children():
+                child_tuple = tuple(map(tuple, child.data))
+                if child_tuple not in self.visited:
+                    child.f_val = self.f(child, goal_matrix)
+                    child.g_val = child.f_val + child.level
+                    heapq.heappush(self.open_list, (child.g_val, child))
+
