@@ -120,4 +120,10 @@ class PuzzleSolver:
                     child.f_val = self.f(child, goal_matrix)
                     child.g_val = child.f_val + child.level
                     heapq.heappush(self.open_list, (child.g_val, child))
+            q_nodes = max(q_nodes, len(self.open_list))
+            
+        if not self.open_list:
+            print("Failed to find a solution.")
+s = PuzzleSolver(3)
+s.driver()
 
