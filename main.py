@@ -12,6 +12,7 @@ class PuzzleSolver:
         self.visited = set()
         self.q_nodes = 0
         self.expanded_nodes = 0
+        self.time = 0
     
     #INPUT FUNCTIONS
     def choose_heuristic(self):
@@ -110,6 +111,29 @@ class PuzzleSolver:
         start_node.h_val = self.h(start_node, goal_matrix)
         start_node.f_val = start_node.h_val + start_node.depth
         heapq.heappush(self.queue, (start_node.f_val, start_node))
+    
+    def build_solution(self, goal_node):
+        print("\nGoal reached!")
+        print("Max Nodes in q:",self.q_nodes,"Nodes Exapnded:",self.expanded_nodes)
+        print("Time = ",self.time)
+        solution = []
+        current_node = goal_node
+        while current_node.parent is not None:
+            solution.append(current_node.data)
+            current_node = current_node.parent
+        solution.append(self.tree.root.data)
+        solution.reverse()
+        print("\nSolution:")
+        for state in solution:
+            for row in state:
+                print(" ".join(row))
+            print("\n")
+            print(" |")
+            print(" |")
+            print(" |")
+            print("\./")
+        print("GOAL!!!")
+        return 
 
     def driver(self):
         self.choose_heuristic()
@@ -122,11 +146,11 @@ class PuzzleSolver:
         start_matrix = [['1', '2', '3'], ['5', '0', '6'], ['4', '7', '8']] #Depth 4
         start_matrix = [['1', '2', '3'], ['5', '6', '0'], ['4', '7', '8']] #Depth 5
         start_matrix = [['1', '2', '3'], ['5', '6', '8'], ['4', '7', '0']] #Depth 6
-        start_matrix = [['0', '1', '2'], ['5', '6', '3'], ['4', '7', '8']] #Depth 8
-        start_matrix = [['1', '3', '6'], ['5', '0', '7'], ['4', '8', '2']] #Depth 12
-        start_matrix = [['1', '6', '7'], ['5', '0', '3'], ['4', '8', '2']] #Depth 16
-        start_matrix = [['7', '1', '2'], ['4', '8', '5'], ['6', '3', '0']] #Depth 20
-        start_matrix = [['0', '7', '2'], ['4', '6', '1'], ['3', '5', '8']] #Depth 24
+        # start_matrix = [['0', '1', '2'], ['5', '6', '3'], ['4', '7', '8']] #Depth 8
+        # start_matrix = [['1', '3', '6'], ['5', '0', '7'], ['4', '8', '2']] #Depth 12
+        # start_matrix = [['1', '6', '7'], ['5', '0', '3'], ['4', '8', '2']] #Depth 16
+        # start_matrix = [['7', '1', '2'], ['4', '8', '5'], ['6', '3', '0']] #Depth 20
+        # start_matrix = [['0', '7', '2'], ['4', '6', '1'], ['3', '5', '8']] #Depth 24
         # start_matrix = [['8', '6', '7'], ['2', '5', '4'], ['3', '0', '1']] #Depth 31
 
 
@@ -134,9 +158,9 @@ class PuzzleSolver:
         goal_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']]
         
         self.initialize_queue(start_matrix, goal_matrix)
-        time = 0
-        while self.q:
-            time += 1
+        # time = 0
+        while self.queue:
+            self.time += 1
             self.expanded_nodes += 1            
             current_cost, current_node = heapq.heappop(self.queue)
 
@@ -147,13 +171,11 @@ class PuzzleSolver:
                 print(" ".join(row))
 
             if self.goal_test(current_node.data, goal_matrix):                
-                print("\nGoal reached!")
-                print("Max Nodes in q:",self.q_nodes,"Nodes Exapnded:",self.expanded_nodes)
-                print("Time = ",time)
+                self.build_solution(current_node)
                 break
             print("Expanding this Node ...")
             for child in current_node.generate_children():
-                time += 1
+                self.time += 1
                 child_tuple = tuple(map(tuple, child.data))
                 if child_tuple not in self.visited:                    
                     child.h_val = self.h(child, goal_matrix)
