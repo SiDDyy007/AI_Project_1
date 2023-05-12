@@ -6,16 +6,16 @@ class PuzzleNode():
         self.f_val = 0
     
     def __lt__(self, other):
-        return self.g_val < other.g_val
+        return self.f_val < other.f_val
 
     def find_space(self):
         for row in range(len(self.data)):
             for col in range(len(self.data)):
-                if self.data[row][col] == 0:
+                if self.data[row][col] == '0':
                     return row, col
     def generate_children(self):
         n = len(self.data)
-        blank_row, blank_col = self.find_space(0)
+        blank_row, blank_col = self.find_space()
         possible_moves = [
             (blank_row, blank_col - 1),
             (blank_row, blank_col + 1),
@@ -29,7 +29,7 @@ class PuzzleNode():
                 # Create a new matrix with the blank space moved to the new position
                 new_matrix = [row.copy() for row in self.data]
                 new_matrix[blank_row][blank_col], new_matrix[row][col] = new_matrix[row][col], new_matrix[blank_row][blank_col]
-                child = PuzzleNode(new_matrix, self.level + 1, 0)
+                child = PuzzleNode(new_matrix, self.depth + 1, 0)
                 children.append(child)
                 
         return children
