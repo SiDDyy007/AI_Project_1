@@ -1,3 +1,4 @@
+from tree_class import Node
 class PuzzleNode():
     def __init__(self, data, depth, h_val, parent = None):
         self.data = data

@@ -2,13 +2,13 @@
 import math
 import heapq
 from puzzle_node import PuzzleNode
-print ("Hello World")
+from tree_class import Tree
 
 class PuzzleSolver:
 
     def __init__(self, size):
         self.size = size
-        self.open_list = []
+        self.queue = []
         self.visited = set()
         self.q_nodes = 0
         self.expanded_nodes = 0
@@ -40,7 +40,7 @@ class PuzzleSolver:
 
         # Accept each row of the puzzle input from the user
         for i in range(3):
-            row = input(f"Please enter {i+1}st row of the puzzle: ").split(" ")
+            row = input(f"Please enter Row {i+1} of the puzzle: ").split(" ")
             puzzle.append(row)
 
         return puzzle
@@ -103,12 +103,13 @@ class PuzzleSolver:
                 if matrix[row][col] == value:
                     return row, col
     
-    def initialize_open_list(self, start_matrix, goal_matrix):
+    def initialize_queue(self, start_matrix, goal_matrix):
         """Initialize the open list with the start node."""
-        start_node = PuzzleNode(start_matrix, 0, 0)
+        self.tree = Tree(start_matrix)
+        start_node = PuzzleNode(start_matrix, 0, 0, parent = None)
         start_node.h_val = self.h(start_node, goal_matrix)
         start_node.f_val = start_node.h_val + start_node.depth
-        heapq.heappush(self.open_list, (start_node.f_val, start_node))
+        heapq.heappush(self.queue, (start_node.f_val, start_node))
 
     def driver(self):
         self.choose_heuristic()
@@ -132,14 +133,16 @@ class PuzzleSolver:
 
         goal_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']]
         
-        self.initialize_open_list(start_matrix, goal_matrix)
+        self.initialize_queue(start_matrix, goal_matrix)
         time = 0
-        while self.open_list:
+        while self.q:
             time += 1
             self.expanded_nodes += 1            
-            current_cost, current_node = heapq.heappop(self.open_list)
+            current_cost, current_node = heapq.heappop(self.queue)
+
             print("Current g(n) =",current_node.depth, "and h(n) = ",current_node.h_val)
             print("Total f(n) for this state:",current_cost)
+
             for row in current_node.data:
                 print(" ".join(row))
 
@@ -155,10 +158,10 @@ class PuzzleSolver:
                 if child_tuple not in self.visited:                    
                     child.h_val = self.h(child, goal_matrix)
                     child.f_val = child.h_val + child.depth
-                    heapq.heappush(self.open_list, (child.f_val, child))
-            self.q_nodes = max(self.q_nodes, len(self.open_list))
+                    heapq.heappush(self.queue, (child.f_val, child))
+            self.q_nodes = max(self.q_nodes, len(self.queue))
             
-        if not self.open_list:
+        if not self.queue:
             print("Failed to find a solution.")
 PuzzleSolver(3).driver()
 # s.driver()
