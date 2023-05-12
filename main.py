@@ -31,13 +31,20 @@ class PuzzleSolver:
     #INPUT FUNCTIONS
     def input_puzzle(self):
         """
-        Accepts the puzzle input from the user and return it as a matrix.
+        Accepts the puzzle input from the user row by row and returns it as a matrix.
 
         :Returns -> The input puzzle matrix.
         """
-        # Accept the puzzle input from the user and return it as a matrix
-        puzzle = [input().split(" ") for _ in range(3)]
+        # Initialize an empty list for the puzzle matrix
+        puzzle = []
+
+        # Accept each row of the puzzle input from the user
+        for i in range(3):
+            row = input(f"Please enter {i+1}st row of the puzzle: ").split(" ")
+            puzzle.append(row)
+
         return puzzle
+
 
     #INPUT FUNCTIONS
     def choose_heuristic(self):
