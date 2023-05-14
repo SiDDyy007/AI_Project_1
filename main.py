@@ -1,11 +1,16 @@
 #Importing the neccessary libraries
-import math
 import heapq
 from puzzle_node import PuzzleNode
 from tree_class import Tree
-
+'''PuzzleSolver class to find the solution for the N-puzzle problem'''
 class PuzzleSolver:
-
+    '''Initialize the puzzle solver with:
+    Puzzle Size -> Size of puzzle (3X3, 4X4, etc)
+    Queue -> To hold states 
+    Visited -> To keep track of already visited states
+    q_nodes -> Keeping track of max nodes in the queue
+    expanded_nodes -> Keeping track of the number of nodes which have been expanded
+    time -> Keep track of number of operations done (Expanding a state as well as checking for Goal test).'''
     def __init__(self, size):
         self.size = size
         self.queue = []
@@ -16,6 +21,9 @@ class PuzzleSolver:
     
     #INPUT FUNCTIONS
     def choose_heuristic(self):
+        """
+        Prompt the user to choose a heuristic function and set the chosen heuristic.
+        """
         print("Choose the heuristic function:")
         print("1. Uniform Cost Search")
         print("2. A* with the Misplaced Tile heuristic (Manhattan distance)")
@@ -48,22 +56,29 @@ class PuzzleSolver:
 
 
     #INPUT FUNCTIONS
-    def choose_heuristic(self):
-        print("Choose the heuristic function:")
-        print("1. Uniform Cost Search")
-        print("2. A* with the Misplaced Tile heuristic")
-        print("3. A* with the Manhattan distance heuristic")
-        choice = int(input("Enter the number of your choice: "))
-        if choice == 1:
-            self.heuristic = "uniform"
-        elif choice == 2:
-            self.heuristic = "misplaced_tile"
-        elif choice == 3:
-            self.heuristic = "manhattan"
-        else:
-            raise ValueError("Invalid choice")
+    # def choose_heuristic(self):
+    #     print("Choose the heuristic function:")
+    #     print("1. Uniform Cost Search")
+    #     print("2. A* with the Misplaced Tile heuristic")
+    #     print("3. A* with the Manhattan distance heuristic")
+    #     choice = int(input("Enter the number of your choice: "))
+    #     if choice == 1:
+    #         self.heuristic = "uniform"
+    #     elif choice == 2:
+    #         self.heuristic = "misplaced_tile"
+    #     elif choice == 3:
+    #         self.heuristic = "manhattan"
+    #     else:
+    #         raise ValueError("Invalid choice")
 
     def h(self, start, goal):
+            """
+            Calculate the heuristic function value f(n) based on the chosen heuristic.
+
+            :Parameter -> start: The start node or matrix.
+            :Parameter -> goal: The goal node or matrix.
+            :Returns   -> The heuristic function value.
+            """
             if self.heuristic == "manhattan":
                 return self.manhattan_distance(start.data, goal)
             elif self.heuristic == "misplaced_tile":
@@ -74,6 +89,13 @@ class PuzzleSolver:
                 raise ValueError("Invalid heuristic")
 
     def goal_test(self, start, goal):
+            """
+            Check if the start and goal matrices are the same.
+
+            :Parameter -> Start: The start matrix.
+            :Parameter -> goal: The goal matrix.
+            :Returns   -> True if the matrices are the same, False otherwise.
+            """
             for row in range(len(start)):
                 for col in range(len(start)):
                     if start[row][col] != goal[row][col]:
@@ -81,6 +103,13 @@ class PuzzleSolver:
             return True
 
     def manhattan_distance(self, start, goal):
+            """
+            Calculate the heuristic function value h(n) as the sum of Manhattan distances for all tiles.
+
+            :Parameter -> start: The start matrix.
+            :Parameter -> goal: The goal matrix.
+            :Returns   -> The sum of Manhattan distances for all tiles.
+            """
             distance = 0
             for num in range(1, self.size * self.size):
                 start_x, start_y = self.find_value(start, str(num))
@@ -113,6 +142,9 @@ class PuzzleSolver:
         heapq.heappush(self.queue, (start_node.f_val, start_node))
     
     def build_solution(self, goal_node):
+        """
+        Build the solution by traversing from the goal node to the root node in the tree.
+        """
         print("\nGoal reached!")
         print("Max Nodes in q:",self.q_nodes,"Nodes Exapnded:",self.expanded_nodes)
         print("Time = ",self.time)
@@ -133,7 +165,8 @@ class PuzzleSolver:
             print(" |")
             print("\./")
         print("GOAL!!!")
-        return 
+        return
+    
 
     def driver(self):
         self.choose_heuristic()
@@ -159,6 +192,7 @@ class PuzzleSolver:
         
         self.initialize_queue(start_matrix, goal_matrix)
         # time = 0
+        solution_found = False
         while self.queue:
             self.time += 1
             self.expanded_nodes += 1            
@@ -172,7 +206,9 @@ class PuzzleSolver:
 
             if self.goal_test(current_node.data, goal_matrix):                
                 self.build_solution(current_node)
+                solution_found = True
                 break
+
             print("Expanding this Node ...")
             for child in current_node.generate_children():
                 self.time += 1
@@ -183,8 +219,7 @@ class PuzzleSolver:
                     heapq.heappush(self.queue, (child.f_val, child))
             self.q_nodes = max(self.q_nodes, len(self.queue))
             
-        if not self.queue:
+        if not solution_found:
             print("Failed to find a solution.")
 PuzzleSolver(3).driver()
-# s.driver()
 
