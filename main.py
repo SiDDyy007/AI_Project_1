@@ -20,24 +20,6 @@ class PuzzleSolver:
         self.time = 0
     
     #INPUT FUNCTIONS
-    def choose_heuristic(self):
-        """
-        Prompt the user to choose a heuristic function and set the chosen heuristic.
-        """
-        print("Choose the heuristic function:")
-        print("1. Uniform Cost Search")
-        print("2. A* with the Misplaced Tile heuristic (Manhattan distance)")
-        print("3. A* with the Euclidean distance heuristic")
-        choice = int(input("Enter the number of your choice: "))
-        if choice == 1:
-            self.heuristic = "uniform"
-        elif choice == 2:
-            self.heuristic = "manhattan"
-        elif choice == 3:
-            self.heuristic = "euclidean"
-        else:
-            raise ValueError("Invalid choice")
-    #INPUT FUNCTIONS
     def input_puzzle(self):
         """
         Accepts the puzzle input from the user row by row and returns it as a matrix.
@@ -56,20 +38,20 @@ class PuzzleSolver:
 
 
     #INPUT FUNCTIONS
-    # def choose_heuristic(self):
-    #     print("Choose the heuristic function:")
-    #     print("1. Uniform Cost Search")
-    #     print("2. A* with the Misplaced Tile heuristic")
-    #     print("3. A* with the Manhattan distance heuristic")
-    #     choice = int(input("Enter the number of your choice: "))
-    #     if choice == 1:
-    #         self.heuristic = "uniform"
-    #     elif choice == 2:
-    #         self.heuristic = "misplaced_tile"
-    #     elif choice == 3:
-    #         self.heuristic = "manhattan"
-    #     else:
-    #         raise ValueError("Invalid choice")
+    def choose_heuristic(self):
+        print("Choose the heuristic function:")
+        print("1. Uniform Cost Search")
+        print("2. A* with the Misplaced Tile heuristic")
+        print("3. A* with the Manhattan distance heuristic")
+        choice = int(input("Enter the number of your choice: "))
+        if choice == 1:
+            self.heuristic = "uniform"
+        elif choice == 2:
+            self.heuristic = "misplaced_tile"
+        elif choice == 3:
+            self.heuristic = "manhattan"
+        else:
+            raise ValueError("Invalid choice")
 
     def h(self, start, goal):
             """
@@ -182,7 +164,7 @@ class PuzzleSolver:
         # start_matrix = [['0', '1', '2'], ['5', '6', '3'], ['4', '7', '8']] #Depth 8
         # start_matrix = [['1', '3', '6'], ['5', '0', '7'], ['4', '8', '2']] #Depth 12
         # start_matrix = [['1', '6', '7'], ['5', '0', '3'], ['4', '8', '2']] #Depth 16
-        # start_matrix = [['7', '1', '2'], ['4', '8', '5'], ['6', '3', '0']] #Depth 20
+        start_matrix = [['7', '1', '2'], ['4', '8', '5'], ['6', '3', '0']] #Depth 20
         # start_matrix = [['0', '7', '2'], ['4', '6', '1'], ['3', '5', '8']] #Depth 24
         # start_matrix = [['8', '6', '7'], ['2', '5', '4'], ['3', '0', '1']] #Depth 31
 
@@ -191,7 +173,6 @@ class PuzzleSolver:
         goal_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']]
         
         self.initialize_queue(start_matrix, goal_matrix)
-        # time = 0
         solution_found = False
         while self.queue:
             self.time += 1
