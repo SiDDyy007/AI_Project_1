@@ -28,15 +28,12 @@ class PuzzleSolver:
         """
         # Initialize an empty list for the puzzle matrix
         puzzle = []
-
-        # Accept each row of the puzzle input from the user
+        # Accept each row of the puzzle input from the user        
         for i in range(3):
             row = input(f"Please enter Row {i+1} of the puzzle: ").split(" ")
             puzzle.append(row)
 
         return puzzle
-
-
     #INPUT FUNCTIONS
     def choose_heuristic(self):
         print("Choose the heuristic function:")
@@ -108,7 +105,6 @@ class PuzzleSolver:
                 misplaced_count += 1
         return misplaced_count
 
-
     def find_value(self, matrix, value):
         for row in range(len(matrix)):
             for col in range(len(matrix[row])):
@@ -128,7 +124,7 @@ class PuzzleSolver:
         Build the solution by traversing from the goal node to the root node in the tree.
         """
         print("\nGoal reached!")
-        print("Max Nodes in q:",self.q_nodes,"Nodes Exapnded:",self.expanded_nodes)
+        print("Max Nodes in q:",self.q_nodes,"Nodes Expanded:",self.expanded_nodes)
         print("Time = ",self.time)
         solution = []
         current_node = goal_node
@@ -141,7 +137,7 @@ class PuzzleSolver:
         for state in solution:
             for row in state:
                 print(" ".join(row))
-            print("\n")
+            # print("\n")
             print(" |")
             print(" |")
             print(" |")
@@ -154,20 +150,20 @@ class PuzzleSolver:
         self.choose_heuristic()
         print("Enter the start state matrix:")
         # start_matrix = self.input_puzzle()
-        start_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']] #Depth 0
-        start_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '0', '8']] #Depth 1
-        start_matrix = [['1', '2', '3'], ['4', '5', '6'], ['0', '7', '8']] #Depth 2
-        start_matrix = [['1', '2', '3'], ['0', '5', '6'], ['4', '7', '8']] # Depth 3
-        start_matrix = [['1', '2', '3'], ['5', '0', '6'], ['4', '7', '8']] #Depth 4
-        start_matrix = [['1', '2', '3'], ['5', '6', '0'], ['4', '7', '8']] #Depth 5
-        start_matrix = [['1', '2', '3'], ['5', '6', '8'], ['4', '7', '0']] #Depth 6
-        # start_matrix = [['0', '1', '2'], ['5', '6', '3'], ['4', '7', '8']] #Depth 8
+        # start_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']] #Depth 0
+        # start_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '0', '8']] #Depth 1 ----
+        # start_matrix = [['1', '2', '3'], ['4', '5', '6'], ['0', '7', '8']] #Depth 2
+        # start_matrix = [['1', '2', '3'], ['0', '5', '6'], ['4', '7', '8']] # Depth 3 ----
+        # start_matrix = [['1', '2', '3'], ['5', '0', '6'], ['4', '7', '8']] #Depth 4
+        # start_matrix = [['1', '2', '3'], ['5', '6', '0'], ['4', '7', '8']] #Depth 5 -----
+        # start_matrix = [['1', '2', '3'], ['5', '6', '8'], ['4', '7', '0']] #Depth 6 -----
+        # start_matrix = [['1', '3', '6'], ['5', '0', '2'], ['4', '7', '8']] #Depth 8
         # start_matrix = [['1', '3', '6'], ['5', '0', '7'], ['4', '8', '2']] #Depth 12
         # start_matrix = [['1', '6', '7'], ['5', '0', '3'], ['4', '8', '2']] #Depth 16
-        start_matrix = [['7', '1', '2'], ['4', '8', '5'], ['6', '3', '0']] #Depth 20
+        # start_matrix = [['7', '1', '2'], ['4', '8', '5'], ['6', '3', '0']] #Depth 20
         # start_matrix = [['0', '7', '2'], ['4', '6', '1'], ['3', '5', '8']] #Depth 24
         # start_matrix = [['8', '6', '7'], ['2', '5', '4'], ['3', '0', '1']] #Depth 31
-
+        start_matrix = self.input_puzzle()
 
 
         goal_matrix = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '0']]
@@ -176,7 +172,9 @@ class PuzzleSolver:
         solution_found = False
         while self.queue:
             self.time += 1
-            self.expanded_nodes += 1            
+            self.expanded_nodes += 1
+            # if self.time >= 50:
+                # break            
             current_cost, current_node = heapq.heappop(self.queue)
 
             print("Current g(n) =",current_node.depth, "and h(n) = ",current_node.h_val)
