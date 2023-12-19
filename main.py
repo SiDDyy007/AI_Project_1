@@ -40,8 +40,7 @@ class PuzzleSolver:
         print("1. Uniform Cost Search")
         print("2. A* with the Misplaced Tile heuristic")
         print("3. A* with the Manhattan distance heuristic")
-        choice = int(input("Enter the number of your choice: "))
-        if choice == 1:
+        if (choice := int(input("Enter the number of your choice: "))) == 1:
             self.heuristic = "uniform"
         elif choice == 2:
             self.heuristic = "misplaced_tile"
